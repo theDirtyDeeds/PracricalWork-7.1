@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection.PortableExecutable;
@@ -124,6 +126,7 @@ namespace Practical_Work_7._1
             }
         }
         #endregion
+        #region Удаление сотрудника
         public void RemoveWorker(int id)
         {
             string path = @"E:\Notepad.txt";
@@ -140,27 +143,72 @@ namespace Practical_Work_7._1
                     Worker worker = new Worker
                     {
                         Id = int.Parse(parts[0]),
+                        //DataTime = DataTime.Parse(parts[1]),
                         Name = parts[2],
-
+                        Age = int.Parse(parts[3]),
+                        Height = int.Parse(parts[4]),
+                        Birthday = parts[5],
+                        Birthplace = parts[6]
 
                     };
                     workers.Add(worker);
                 }
                 workers.RemoveAll(worker => worker.Id == id);
 
-                using (StreamWriter sw = new StreamWriter(path)) 
+                using (StreamWriter sw = new StreamWriter(path))
                 {
                     foreach (Worker worker in workers)
                     {
-                        sw.WriteLine($"{worker.Id}, {worker.Name}");
+                        sw.WriteLine($"{worker.Id}, {DateTime.Now:g}, {worker.Name}, {worker.Age}, {worker.Height}, {worker.Birthday}, {worker.Birthplace}");
                     }
                 }
             }
         }
-    }
-    //public Worker[] GetWorkersBetweenTwoDates(DateTime dateFrom, DateTime dateTo) 
-    //{
+        #endregion
 
-    //}
+        public Worker[] GetWorkersBetweenTwoDates(DateTime dateFrom, DateTime dateTo)
+        {
+            string path = @"E:\Notepad.txt";
+
+            FileInfo fileInfo = new FileInfo(path);
+
+            List<Worker> workers = new List<Worker>();
+
+            if (fileInfo.Exists) 
+            {
+                string[] lines = File.ReadAllLines(path);
+
+                foreach (string line in lines) 
+                {
+                    string[] parts = line.Split(",");
+
+                    if (parts.Length >= 6)
+                    {
+                        string name = parts[0];
+                        DateTime registrationDate = DateTime.ParseExact(parts[1], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                        int age = int.Parse(parts[2]);
+                        int height = int.Parse(parts[3]);
+                        string birthday = parts[4];
+                        string birthplace = parts[5];
+
+                        if (registrationDate >= dateFrom && registrationDate <= dateTo)
+                        {
+                            workers.Add(new Worker
+                            {
+                                Name = name,
+                                Age = age,
+                                Height = height,
+                                Birthday = birthday,
+                                Birthplace = birthplace
+                            });
+                        }
+                    }
+                }
+
+            }
+            return workers.ToArray();
+
+        }
+    }
 } 
 

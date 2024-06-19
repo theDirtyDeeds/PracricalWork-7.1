@@ -6,7 +6,7 @@ namespace Practical_Work_7._1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Выберите действие: \n1:Запись.\n2:Чтение.\n3:Поиск по ID.\n4:Добавить нового сотрудника.\n5:Удалить сотрудника. ");
+            Console.WriteLine("Выберите действие: \n1:Запись.\n2:Чтение.\n3:Поиск по ID.\n4:Добавить нового сотрудника.\n5:Удалить сотрудника.\n6:Сортировка. ");
             
             int userChoise = Convert.ToInt32(Console.ReadLine());
 
@@ -58,7 +58,32 @@ namespace Practical_Work_7._1
                         Console.WriteLine("Сотрудник не найден");
                     }
                     break;
-      
+                case 6:
+                    Console.WriteLine("Введите дату начала (дд.мм.гггг)");
+
+                    if (DateTime.TryParse(Console.ReadLine(), out DateTime dateFrom))
+                    {
+                        Console.WriteLine("Введите дату окончания(дд.мм.гггг)");
+
+                        if (DateTime.TryParse(Console.ReadLine(), out DateTime dateTo))
+                        {
+                            repository.GetWorkersBetweenTwoDates(dateFrom, dateTo);
+
+                            foreach (Worker worker in repository.GetAllWorker())
+                            {
+                                Console.WriteLine($"{worker.Id},{worker.Name}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Некорректная дата окончания");
+                        }
+                    }
+                    else 
+                    {
+                        Console.WriteLine("Некорректная дата начала");
+                    }
+                    break;
             }
 
             

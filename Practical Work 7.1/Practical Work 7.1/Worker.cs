@@ -20,6 +20,5 @@ namespace Practical_Work_7._1
 
         public string Birthplace { get; set; }
 
-        
     }
-}
+}   
