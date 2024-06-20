@@ -15,7 +15,7 @@ namespace Practical_Work_7._1
         #region Чтение файла
         public Worker[] GetAllWorker()
         {
-            string path = @"E:\Notepad.txt";
+            string path = @"\Notepad.txt";
 
             FileInfo fileInfo = new FileInfo(path);
 
@@ -41,7 +41,7 @@ namespace Practical_Work_7._1
         #region Поиск по ID
         public Worker GetWorkerbyId(int id)
         {
-            string path = @"E:\Notepad.txt";
+            string path = @"\Notepad.txt";
 
             FileInfo fileInfo = new FileInfo(path);
 
@@ -101,12 +101,12 @@ namespace Practical_Work_7._1
 
             worker.Id = 1;
 
-            if (File.Exists(@"E:\Notepad.txt"))
+            if (File.Exists(@"\Notepad.txt"))
             {
-                worker.Id = File.ReadAllLines(@"E:\Notepad.txt").Length + 1;
+                worker.Id = File.ReadAllLines(@"\Notepad.txt").Length + 1;
             }
 
-            string employerData = $"{worker.Id}, {DateTime.Now:g}, {worker.Name}, {worker.Age}, {worker.Height}, {worker.Birthday}, {worker.Birthplace}";
+            string employerData = $"{worker.Id}, {DateTime.Now:dd.MM.yyyy HH:mm}, {worker.Name}, {worker.Age}, {worker.Height}, {worker.Birthday}, {worker.Birthplace}";
 
             string[] employer = employerData.Split(" ");
 
@@ -114,13 +114,13 @@ namespace Practical_Work_7._1
             {
                 Console.WriteLine(e);
             }
-            string path = @"E:\Notepad.txt";
+            string path = @"\Notepad.txt";
 
             FileInfo fileInfo = new FileInfo(path);
 
             if (fileInfo.Exists)
             {
-                File.AppendAllText(@"E:\Notepad.txt", employerData + Environment.NewLine);
+                File.AppendAllText(@"\Notepad.txt", employerData + Environment.NewLine);
 
                 Console.WriteLine("Сотрудник добавлен");
             }
@@ -129,7 +129,7 @@ namespace Practical_Work_7._1
         #region Удаление сотрудника
         public void RemoveWorker(int id)
         {
-            string path = @"E:\Notepad.txt";
+            string path = @"\Notepad.txt";
 
             if (File.Exists(path))
             {
@@ -165,10 +165,10 @@ namespace Practical_Work_7._1
             }
         }
         #endregion
-
+        #region Сортировка
         public Worker[] GetWorkersBetweenTwoDates(DateTime dateFrom, DateTime dateTo)
         {
-            string path = @"E:\Notepad.txt";
+            string path = @"\Notepad.txt";
 
             FileInfo fileInfo = new FileInfo(path);
 
@@ -182,19 +182,21 @@ namespace Practical_Work_7._1
                 {
                     string[] parts = line.Split(",");
 
-                    if (parts.Length >= 6)
+                    if (parts.Length >= 7)
                     {
-                        string name = parts[0];
-                        DateTime registrationDate = DateTime.ParseExact(parts[1], "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                        int age = int.Parse(parts[2]);
-                        int height = int.Parse(parts[3]);
-                        string birthday = parts[4];
-                        string birthplace = parts[5];
+                        int id = int.Parse(parts[0]);
+                        DateTime registrationDate = DateTime.ParseExact(parts[1].Trim(), "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture);
+                        string name = parts[2];
+                        int age = int.Parse(parts[3]);
+                        int height = int.Parse(parts[4]);
+                        string birthday = parts[5];
+                        string birthplace = parts[6];
 
                         if (registrationDate >= dateFrom && registrationDate <= dateTo)
                         {
                             workers.Add(new Worker
-                            {
+                            {   
+                                Id = id,
                                 Name = name,
                                 Age = age,
                                 Height = height,
@@ -207,8 +209,8 @@ namespace Practical_Work_7._1
 
             }
             return workers.ToArray();
-
         }
+        #endregion
     }
 } 
 

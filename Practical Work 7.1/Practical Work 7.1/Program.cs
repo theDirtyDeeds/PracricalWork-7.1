@@ -67,9 +67,9 @@ namespace Practical_Work_7._1
 
                         if (DateTime.TryParse(Console.ReadLine(), out DateTime dateTo))
                         {
-                            repository.GetWorkersBetweenTwoDates(dateFrom, dateTo);
+                            Worker[] workers = repository.GetWorkersBetweenTwoDates(dateFrom, dateTo);
 
-                            foreach (Worker worker in repository.GetAllWorker())
+                            foreach (Worker worker in workers)
                             {
                                 Console.WriteLine($"{worker.Id},{worker.Name}");
                             }
@@ -120,12 +120,12 @@ namespace Practical_Work_7._1
 
             worker.Id = 1;
 
-            if (File.Exists(@"E:\Notepad.txt"))
+            if (File.Exists(@"\Notepad.txt"))
             {
                 worker.Id = File.ReadAllLines(@"E:\Notepad.txt").Length + 1;
             }
 
-            string employerData = $"{worker.Id}, {DateTime.Now:g}, {worker.Name}, {worker.Age}, {worker.Height}, {worker.Birthday}, {worker.Birthplace}";
+            string employerData = $"{worker.Id}, {DateTime.Now:dd.MM.yyyy HH:mm}, {worker.Name}, {worker.Age}, {worker.Height}, {worker.Birthday}, {worker.Birthplace}";
 
             string[] employer = employerData.Split(" ");
 
